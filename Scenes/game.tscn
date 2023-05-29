@@ -1,0 +1,126 @@
+[gd_scene load_steps=13 format=3 uid="uid://bh257n8juh7uj"]
+
+[ext_resource type="PackedScene" uid="uid://p5jjq4a33470" path="res://Entities/Player/player.tscn" id="1_ejagf"]
+[ext_resource type="Script" path="res://Scenes/game.gd" id="1_gq6j6"]
+[ext_resource type="PackedScene" uid="uid://dccalm666t787" path="res://Entities/Astroid/astroid.tscn" id="3_y71fg"]
+[ext_resource type="PackedScene" uid="uid://bovv4rdij4jne" path="res://UI/hud.tscn" id="4_cooye"]
+[ext_resource type="PackedScene" uid="uid://bwtlm21yxev0m" path="res://UI/game_over_screen.tscn" id="5_70t6e"]
+[ext_resource type="PackedScene" uid="uid://drllnpoj7gulj" path="res://Entities/Player/player_spawn_area.tscn" id="6_koa85"]
+[ext_resource type="AudioStream" uid="uid://dsp7sm5j288qm" path="res://Assets/Sounds/sfx_laser1.wav" id="7_gioh6"]
+[ext_resource type="AudioStream" uid="uid://buve52p1l4e34" path="res://Assets/Sounds/hit.wav" id="8_dfunl"]
+[ext_resource type="AudioStream" uid="uid://b555aj788sbyd" path="res://Assets/Sounds/explode.wav" id="9_ulu57"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_c6v8k"]
+emission_shape = 3
+emission_box_extents = Vector3(1, 360, 1)
+particle_flag_disable_z = true
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = -10.0
+initial_velocity_max = -10.0
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+color = Color(0.631373, 0.631373, 0.631373, 1)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_d6tnq"]
+emission_shape = 3
+emission_box_extents = Vector3(1, 360, 1)
+particle_flag_disable_z = true
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = -20.0
+initial_velocity_max = -20.0
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+scale_min = 3.0
+scale_max = 3.0
+color = Color(0.756863, 0.756863, 0.756863, 1)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6cje7"]
+emission_shape = 3
+emission_box_extents = Vector3(1, 360, 1)
+particle_flag_disable_z = true
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = -30.0
+initial_velocity_max = -30.0
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+scale_min = 5.0
+scale_max = 5.0
+color = Color(0.878431, 0.878431, 0.878431, 1)
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_gq6j6")
+
+[node name="BackgroundStartField" type="Node" parent="."]
+
+[node name="StarFieldBack" type="GPUParticles2D" parent="BackgroundStartField"]
+z_index = -100
+position = Vector2(1321, 360)
+amount = 1000
+process_material = SubResource("ParticleProcessMaterial_c6v8k")
+lifetime = 140.0
+preprocess = 140.0
+
+[node name="StarFieldMid" type="GPUParticles2D" parent="BackgroundStartField"]
+z_index = -95
+position = Vector2(1321, 360)
+amount = 250
+process_material = SubResource("ParticleProcessMaterial_d6tnq")
+lifetime = 100.0
+preprocess = 100.0
+
+[node name="StarFieldFront" type="GPUParticles2D" parent="BackgroundStartField"]
+z_index = -90
+position = Vector2(1321, 360)
+amount = 30
+process_material = SubResource("ParticleProcessMaterial_6cje7")
+lifetime = 60.0
+preprocess = 60.0
+
+[node name="Player" parent="." instance=ExtResource("1_ejagf")]
+position = Vector2(640, 360)
+
+[node name="Lasers" type="Node" parent="."]
+
+[node name="Astroids" type="Node" parent="."]
+
+[node name="Astroid" parent="Astroids" instance=ExtResource("3_y71fg")]
+position = Vector2(219, 166)
+
+[node name="Astroid2" parent="Astroids" instance=ExtResource("3_y71fg")]
+position = Vector2(988, 159)
+
+[node name="Astroid3" parent="Astroids" instance=ExtResource("3_y71fg")]
+position = Vector2(331, 587)
+
+[node name="Astroid4" parent="Astroids" instance=ExtResource("3_y71fg")]
+position = Vector2(1001, 491)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="HUD" parent="UI" instance=ExtResource("4_cooye")]
+
+[node name="GameOverScreen" parent="UI" instance=ExtResource("5_70t6e")]
+visible = false
+
+[node name="PlayerRespawnPos" type="Marker2D" parent="."]
+position = Vector2(640, 360)
+
+[node name="PlayerSpawnArea" parent="PlayerRespawnPos" instance=ExtResource("6_koa85")]
+
+[node name="LaserSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_gioh6")
+
+[node name="AstoidHitSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_dfunl")
+
+[node name="PlayerDiedSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_ulu57")
+
+[connection signal="died" from="Player" to="." method="_on_player_died"]
+[connection signal="laser_shot" from="Player" to="." method="_on_player_laser_shot"]
+[connection signal="pressed" from="UI/GameOverScreen/RestartButton" to="." method="_on_restart_button_pressed"]
+
+[editable path="UI/GameOverScreen"]

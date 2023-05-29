@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://dccalm666t787"]
+
+[ext_resource type="Texture2D" uid="uid://dvd56im34q8pm" path="res://Assets/Sprites/meteorGrey_big4.png" id="1_kwale"]
+[ext_resource type="Script" path="res://Entities/Astroid/astroid.gd" id="1_upfea"]
+[ext_resource type="Shape2D" uid="uid://sxg3u5em02ri" path="res://Entities/Astroid/resources/astroid-big-collision.tres" id="3_tcdre"]
+
+[node name="Astroid" type="Area2D"]
+collision_layer = 4
+collision_mask = 11
+script = ExtResource("1_upfea")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_kwale")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = ExtResource("3_tcdre")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

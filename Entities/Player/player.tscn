@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://p5jjq4a33470"]
+
+[ext_resource type="Texture2D" uid="uid://ckpp5ts0tc5cp" path="res://Assets/Sprites/player_ship.png" id="1_avupo"]
+[ext_resource type="Script" path="res://Entities/Player/player.gd" id="1_xl8my"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lvf1k"]
+radius = 18.0
+
+[node name="Player" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("1_xl8my")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("1_avupo")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 4)
+shape = SubResource("CircleShape2D_lvf1k")
+
+[node name="ProjectileMarker" type="Marker2D" parent="."]
+position = Vector2(0, -29)
